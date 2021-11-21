@@ -1,0 +1,30 @@
+environment：
+torch 1.2.0+cu92
+torchvision 0.4.0+cu92
+numpy, matplotlib, pandas
+
+generate tasks:
+python generate_dataset.py
+
+meta training：
+python Meta_training.py
+
+parameters and mutations are stored in: './meta_checkpoint/parameteric_loss.pth'
+changes of best fitness and corresponding validation accuracy are stored in './train_imageFolder/parameteric_loss.jpg'
+
+note: We implement MLN training in multithreading and distribute the training process on two GPUs ( cuda : 0 and cuda : 1 ), as detailed in 108 to 111 lines of Meta_training.py.
+
+meta testing:
+generated tasks:  python metatesting_generated.py
+average results are stored in: './test_dir/MetaTestingResult_generated_acc.jpg', './test_dir/MetaTestingResult_generated_loss_metaloss.jpg', './test_dir/MetaTestingResult_generated.csv'
+
+default tasks: single-layer perceptron-generated datasets
+
+actual tasks:
+CE:    python CETesting.py
+MSE: python MSETesting.py
+MLN: python MLNTesting.py
+
+default tasks: VGG16-CIFAR10
+
+note: please store the parameteric_loss.pth file in the releases of repositories to ./meta_checkpoint
