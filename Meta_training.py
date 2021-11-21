@@ -47,20 +47,15 @@ def make_kids(pop, num_kids, DNA_SIZE):
     kids = {'DNA':torch.zeros(num_kids, DNA_SIZE),
             'MUT_STRENGTH':torch.zeros(num_kids, DNA_SIZE)}
     for kv, ks in zip(kids['DNA'], kids['MUT_STRENGTH']):
-        ### 随机选两个父代
         p1, p2 = np.random.choice(np.arange(NUM_PARENTS), size=2, replace=True)
-        ### 随机生成交叉点
         cp = np.random.randint(0, 2, DNA_SIZE, dtype=np.bool)
-        ### 交叉
         kv[cp] = pop['DNA'][p1, cp]
         kv[~cp]= pop['DNA'][p2, ~cp]
         ks[cp] = pop['MUT_STRENGTH'][p1, cp]
         ks[~cp]= pop['MUT_STRENGTH'][p2, ~cp]
-        ### 变异
         ks[:] = ks * torch.exp(((2 * (DNA_SIZE**0.5))**(-0.5))*torch.randn(*ks.shape)
                                + (2*DNA_SIZE)**(-0.5)*torch.randn(*ks.shape))
         kv += ks * torch.randn(*kv.shape)
-    ### 混合父代和子代
     for key in ['DNA', 'MUT_STRENGTH']:
         pop[key] = torch.cat((pop[key], kids[key]),0)
     return pop
