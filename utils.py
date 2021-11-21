@@ -21,7 +21,6 @@ def set_parameters(meta_networks, grad_list, bias=True):
     offset = 0
     if bias == True:
         for mod in meta_networks.children():
-            '''拿到第一个children，判断一下这个children是不是nn.Sequential'''
             if isinstance(mod, nn.Sequential):
                 for m in mod.children():
                     if len(m._parameters) is not 0:
@@ -58,7 +57,6 @@ def set_parameters(meta_networks, grad_list, bias=True):
                         offset += weight_flat_size + bias_flat_size
     else:
         for mod in meta_networks.children():
-            '''拿到第一个children，判断一下这个children是不是nn.Sequential'''
             if isinstance(mod, nn.Sequential):
                 for m in mod.children():
                     if len(m._parameters) is not 0:
@@ -89,16 +87,10 @@ def set_parameters(meta_networks, grad_list, bias=True):
                         offset += weight_flat_size
 
 def get_flat_parameters(meta_opt, bias=True):
-    '''
-    获取元学习器的梯度信息
-    :param meta_opt: 元学习器的模型
-    :return: 展开的梯度信息
-    '''
     # print(meta_opt.children)
     _loss_grad = []
     for mod in meta_opt.children():  # model_with_grad.module.children()
         # print(isinstance(mod, nn.Sequential))
-        '''拿到第一个children，判断一下这个children是不是nn.Sequential'''
         if isinstance(mod, nn.Sequential):
             for m in mod.children():
                 # print(m)
