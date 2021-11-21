@@ -26,3 +26,5 @@ MSE: python MSETesting.py
 MLN: python MLNTesting.py
 
 default tasks: VGG16-CIFAR10
+
+note: please store the parameteric_loss.pth file in the releases of repositories to ./meta_checkpoint
