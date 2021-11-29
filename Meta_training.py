@@ -3,7 +3,7 @@ import torch.optim as optim
 from torch.autograd import Variable
 import matplotlib.pyplot as plt
 from DataSplit import MultiToyTasks
-from META_OPTIMIZER_WITHOUT_GRAD_v3 import MetaOptimizer
+from META_OPTIMIZER_WITHOUT_GRAD_train import MetaOptimizer
 from utils import get_flat_parameters, set_parameters
 from model import ToyModel
 print(ToyModel())
