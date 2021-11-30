@@ -77,20 +77,19 @@ def test(dataloader, net, gt, worse_fitness, par, dvc):
     net.eval()
     num_id = 0
     correct = 0
+    test_loss = 0
     with torch.no_grad():
         for batch_id, (inputs, targets) in enumerate(dataloader):
             num_id += 1
             inputs, targets = inputs.to(dvc), targets.to(dvc)
             outputs = net(inputs)
             gt_out  = gt(inputs)
-            test_loss = -torch.mean((F.softmax(outputs) - F.softmax(gt_out))**2)
-            # sorted_loss, idc = torch.sort(test_loss)
-            # min_ = sorted_loss[0]
+            test_loss += - F.mse_loss(F.softmax(outputs), F.softmax(gt_out))
 
             _, predicted = outputs.max(1)  # judge max elements in predicted`s Row(1:Row     0:Column)
             correct += predicted.eq(targets).float().sum()  # judge how many elements same in predicted and targets
 
-    fitness = test_loss
+    fitness = test_loss / len(dataloader)
     if worse_fitness > fitness:
         worse_fitness = fitness
         dict_acc[par] = (100. * correct / targets.size(0)).view(1, 1).cpu()
